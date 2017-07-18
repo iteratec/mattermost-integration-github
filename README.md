@@ -17,12 +17,7 @@ Copy `config.template` to `config.py` and edit it with your details. For example
 ```python
 USERNAME = "Github"
 ICON_URL = "https://yourdomain.org/github.png"
-MATTERMOST_WEBHOOK_URLS = {
-    'default' : ("yourdomain.org/hooks/hookid", "off-topic"),
-    'teamname/repositoryname' : ("yourdomain.org/hooks/hookid2", "repository-channel-id"),
-    'teamname' : ("yourdomain.org/hooks/hookid3", "town-square"),
-    'teamname/unimportantrepo' : None,
-}
+MATTERMOST_WEBHOOK_URL = "https://yourdomain.org/hooks/"
 SECRET = 'secretkey'
 SHOW_AVATARS = True
 SERVER = {
@@ -32,21 +27,20 @@ SERVER = {
 }
 ```
 
-GitHub messages can be delegated to different Mattermost hooks. The order is as
-follows. First try to find a hook for the repositories full name.  If that
-fails, try to find a hook for the organisation name. Otherwise use the default
-hook. Repositories can be blacklisted by setting them to `None` instead of
-`(url, channel)`.
-
 The server is listening by default on address `0.0.0.0`, port `5000`, and
 using `/` as base route.
-Make sure to point your Github webhooks to `http://yourdomain.org:5000/`.
+Point your Github webhooks to `http://yourdomain.org:5000/hook_id/channel`.
+Github messages will then be delegated to the hook identified via `hook_id` and
+posted in the channel `channel`.
+
+Channel names need to use the spelling that is used in their URL (the channel ID), e.g. instead
+of `Town Square` it needs to be `town-square`.
 
 If you have a proxy/load-balancer in front of your machine, and do not want to
 expose port 5000 to the outside, change the `SERVER['hook']` value and redirect it
 to this service.
 For example, if `SERVER['hook']` is `/hooks/github`, your Github webhooks
-would be `http://yourdomain.org/hooks/github`.
+would be `http://yourdomain.org/hooks/github/hook_id/channel`.
 
 If you don't want to use a secret set the field to `None`.
 
@@ -65,8 +59,7 @@ services:
     image: dynamictivity/mattermost-integration-github
     environment:
       FLASK_DEBUG: 1
-      MATTERMOST_WEBHOOK_URL: "https://mattermost.dynamictivity.com/hooks/xesfsu9pj3no8emqagi7yuo6jr"
-      MATTERMOST_WEBHOOK_CHANNEL: "mm-integration-github"
+      MATTERMOST_WEBHOOK_URL: "https://mattermost.dynamictivity.com/hooks/"
     ports:
       - "5000:5000"
 ```
@@ -95,8 +88,5 @@ Not all Github events are forwarded to Mattermost. Currently supported events ar
 All other events will report back to GitHub with `400 Not Implemented`.
 
 ## Known issues
-
-- Channel names need to use the spelling that is used in their URL (the channel ID), e.g. instead
-of `Town Square` it needs to be `town-square`.
 
 - If you set a custom username (as shown in the default config), make sure you also set **Enable webhooks and slash commands to override usernames** under **Custom Integrations** in the System Console to **True**. Otherwise the bots username will be that of the person that setup the Mattermost integration.

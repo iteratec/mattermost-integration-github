@@ -2,10 +2,7 @@ import os
 
 USERNAME = os.environ.get('MATTERMOST_WEBHOOK_USERNAME', 'GitHub')
 ICON_URL = ""
-MATTERMOST_WEBHOOK_URLS = {
-    'default': (os.environ.get('MATTERMOST_WEBHOOK_URL', 'yourdomain.org/hooks/hookid'),
-                os.environ.get('MATTERMOST_WEBHOOK_CHANNEL', 'town-square')),
-}
+WEBHOOK_URL = os.environ.get('MATTERMOST_WEBHOOK_URL', 'yourdomain.org/hooks/')
 SECRET = os.environ.get('MM_INT_SECRET', '')
 SHOW_AVATARS = os.environ.get('MM_INT_SHOW_AVATARS', True)
 SERVER = {

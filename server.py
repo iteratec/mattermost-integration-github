@@ -15,8 +15,8 @@ app = Flask(__name__)
 SECRET = hmac.new(config.SECRET, digestmod=hashlib.sha1) if config.SECRET else None
 
 
-@app.route(config.SERVER['hook'] or "/", methods=['POST'])
-def root():
+@app.route((config.SERVER['hook'] or '/') + '<hook_id>/<channel>', methods=['POST'])
+def root(hook_id, channel):
     if request.json is None:
         print 'Invalid Content-Type'
         return 'Content-Type must be application/json and the request body must contain valid JSON', 400
@@ -79,13 +79,8 @@ def root():
         msg = Wiki(data).updated()
 
     if msg:
-        hook_info = get_hook_info(data)
-        if hook_info:
-            url, channel = get_hook_info(data)
-            post(msg, url, channel)
-            return "Notification successfully posted to Mattermost"
-        else:
-            return "Notification ignored (repository is blacklisted)."
+        post(msg, config.WEBHOOK_URL.rstrip('/') + '/' + hook_id, channel)
+        return "Notification posted to Mattermost"
     else:
         return "Not implemented", 400
 
@@ -103,28 +98,6 @@ def post(text, url, channel):
     if r.status_code is not requests.codes.ok:
         print 'Encountered error posting to Mattermost URL %s, status=%d, response_body=%s' % (
         url, r.status_code, r.json())
-
-
-def get_hook_info(data):
-    if 'repository' in data:
-        repo = data['repository']['full_name']
-        if repo in config.MATTERMOST_WEBHOOK_URLS:
-            return config.MATTERMOST_WEBHOOK_URLS[repo]
-    if 'organization' in data:
-        org = data['organization']['login']
-        if org in config.MATTERMOST_WEBHOOK_URLS:
-            return config.MATTERMOST_WEBHOOK_URLS[org]
-    if 'repository' in data:
-        if 'login' in data['repository']['owner']:
-            owner = data['repository']['owner']['login']
-            if owner in config.MATTERMOST_WEBHOOK_URLS:
-                return config.MATTERMOST_WEBHOOK_URLS[owner]
-        if 'name' in data['repository']['owner']:
-            owner = data['repository']['owner']['name']
-            if owner in config.MATTERMOST_WEBHOOK_URLS:
-                return config.MATTERMOST_WEBHOOK_URLS[owner]
-    return config.MATTERMOST_WEBHOOK_URLS['default']
-
 
 if __name__ == "__main__":
     app.run(

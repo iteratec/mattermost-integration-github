@@ -4,7 +4,6 @@ services:
     build: .
     environment:
       FLASK_DEBUG: 1
-      MATTERMOST_WEBHOOK_URL: "https://mattermost.dynamictivity.com/hooks/xesfsu9pj3no8emqagi7yuo6jr"
-      MATTERMOST_WEBHOOK_CHANNEL: "mm-integration-github"
+      MATTERMOST_WEBHOOK_URL: "https://mattermost.dynamictivity.com/hooks/"
     ports:
       - "5000:5000"
