@@ -16,7 +16,7 @@ Copy `config.template` to `config.py` and edit it with your details. For example
 
 ```python
 USERNAME = "Github"
-ICON_URL = "yourdomain.org/github.png"
+ICON_URL = "https://yourdomain.org/github.png"
 MATTERMOST_WEBHOOK_URLS = {
     'default' : ("yourdomain.org/hooks/hookid", "off-topic"),
     'teamname/repositoryname' : ("yourdomain.org/hooks/hookid2", "repository-channel-id"),
