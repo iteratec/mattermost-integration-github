@@ -1,9 +1,9 @@
 # Github integration for Mattermost
 
+Fork of https://gitlab.dynamictivity.com/dynamictivity/mattermost-integration-github
+
 Inspired by [mattermost-integration-gitlab](https://github.com/NotSqrt/mattermost-integration-gitlab) this program creates a server using [flask](https://github.com/mitsuhiko/flask) that listens for incoming GitHub event webhooks. These are then processed, formatted, and eventually forwarded to Mattermost where they are displayed inside a specified channel.
 ![](preview.png)
-
-Join us in our [Mattermost Channel](https://mattermost.dynamictivity.com/signup_user_complete/?id=pjksr6h977n4zxxyto3ojp8twa)
 
 ## Requirements
 - Python
