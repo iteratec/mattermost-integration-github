@@ -1,7 +1,7 @@
 import os
 
 USERNAME = os.environ.get('MATTERMOST_WEBHOOK_USERNAME', 'GitHub')
-ICON_URL = ""
+ICON_URL = os.environ.get('MM_INT_ICON_URL', '""')
 WEBHOOK_URL = os.environ.get('MATTERMOST_WEBHOOK_URL', 'yourdomain.org/hooks/')
 SECRET = os.environ.get('MM_INT_SECRET', '')
 SHOW_AVATARS = os.environ.get('MM_INT_SHOW_AVATARS', True)
