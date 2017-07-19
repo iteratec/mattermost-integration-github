@@ -30,7 +30,7 @@ SERVER = {
 The server is listening by default on address `0.0.0.0`, port `5000`, and
 using `/` as base route.
 Point your Github webhooks to `http://yourdomain.org:5000/hook_id/channel`.
-Github messages will then be delegated to the hook identified via `hook_id` and
+Github notifications will then be delegated to the hook identified via `hook_id` and
 posted in the channel `channel`.
 
 Channel names need to use the spelling that is used in their URL (the channel ID), e.g. instead
