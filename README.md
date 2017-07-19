@@ -32,6 +32,9 @@ using `/` as base route.
 Point your Github webhooks to `http://yourdomain.org:5000/hook_id/channel`.
 Github notifications will then be delegated to the hook identified via `hook_id` and
 posted in the channel `channel`.
+Or point your github webhook to `http://yourdomain.org:5000/hook_id`. Github
+notifications will the be posted in the channel that is per default associated
+with the `hook_id`.
 
 Channel names need to use the spelling that is used in their URL (the channel ID), e.g. instead
 of `Town Square` it needs to be `town-square`.

@@ -14,9 +14,9 @@ app = Flask(__name__)
 
 SECRET = hmac.new(config.SECRET, digestmod=hashlib.sha1) if config.SECRET else None
 
-
+@app.route((config.SERVER['hook'] or '/') + '<hook_id>', methods=['POST'])
 @app.route((config.SERVER['hook'] or '/') + '<hook_id>/<channel>', methods=['POST'])
-def root(hook_id, channel):
+def root(hook_id, channel=None):
     if request.json is None:
         print 'Invalid Content-Type'
         return 'Content-Type must be application/json and the request body must contain valid JSON', 400
@@ -88,9 +88,10 @@ def root(hook_id, channel):
 def post(text, url, channel):
     data = {}
     data['text'] = text
-    data['channel'] = channel
     data['username'] = config.USERNAME
     data['icon_url'] = config.ICON_URL
+    if channel is not None:
+        data['channel'] = channel
 
     headers = {'Content-Type': 'application/json'}
     r = requests.post(url, headers=headers, data=json.dumps(data), verify=False)
